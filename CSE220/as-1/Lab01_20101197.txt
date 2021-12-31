@@ -1,0 +1,392 @@
+/*
+ * Name: Abir Ahammed Bhuiyan
+ * ID: 20101197
+ * Section: 06
+*/
+
+public class Assignment1{
+    public static void main(String args[]){
+
+        /*               #######################
+                         #### Linear Arrays ####             
+                         #######################
+         */
+
+        //1. Shift Left k Cells
+        int source1[] = {10, 20, 30, 40, 50, 60};
+        shiftLeft(source1, 3);
+        printArray(source1);
+
+        //2. Rotate Left k Cells
+        int source2[] = {10, 20, 30, 40, 50, 60};
+        rotateLeft(source2, 3);
+        printArray(source2);
+
+        //3. Remove an element from an array
+        int source3[] = {10, 20, 30, 40, 50, 0, 0};
+        remove(source3, 5, 2);
+        printArray(source3);
+
+        //4. Remove all occurrences of a particular element from an array
+        int source4[] = {10, 2, 30, 2, 50, 2, 2, 0, 0};
+        removeAll(source4, 7, 2);
+        printArray(source4);
+
+        //5. Splitting an Array
+        int source5[] = {1, 1, 1, 2, 1};
+        //int source5[] = {2, 1, 1, 2, 1};
+        //int source5[] = {10, 3, 1, 2, 10};
+        System.out.println(SplitArray(source5));
+
+        //6. Array series
+        //printArray(ArraySeries(2));
+        //printArray(ArraySeries(3));
+        printArray(ArraySeries(4));
+
+        //7. Max Bunch Count
+        int source7[] = {1, 2, 2, 3, 4, 4, 4};
+        //int source7[] = {1, 1, 2, 2, 1, 1, 1, 1};
+        System.out.println(MaxBunchCount(source7));
+
+        //8. Repetition
+        int source8[] = {4, 5, 6, 6, 4, 3, 6, 4};
+        //int source8[] = {3, 4, 6, 3, 4, 7, 4, 6, 8, 6, 6};
+        System.out.println(Repetition(source8));
+
+
+
+
+        /*               #########################
+                         #### Circular Arrays ####             
+                         #########################
+         */
+        
+        
+        //1. Palindrome
+        
+        int source9[] = {20, 10, 0, 0, 0, 10, 20, 30};
+        System.out.println(Palindrom(source9, 5, 5));
+        //int source9[] = {10, 20, 0, 0, 0, 10, 20, 30};
+        //System.out.println(Palindrom(source9, 5, 5));
+        
+
+        //2. Intersection
+        int c_arr1[] = {40, 50, 0, 0, 0, 10, 20, 30};
+        int c_arr2[] = {10, 20, 5, 0, 0, 0, 0, 0, 5, 40, 15, 25};
+        printArray(Intersection(c_arr1, c_arr2, 5, 7, 5, 8));
+
+        //3. The Musical Chair Game
+        char participants[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
+        mcg_Game(participants);
+
+    }
+
+    public static void printArray(int arr[]){
+        System.out.print("[");
+
+        for(int i=0; i<arr.length; i++){
+            if(i == arr.length-1){
+                System.out.print(arr[i]);
+            }else{
+                System.out.print(arr[i] + ", ");
+            }
+        }
+        System.out.println("]");
+    }
+
+    public static void shiftLeft(int source[], int k){
+
+        if(k>source.length || k<0){
+            System.out.println("Invalid 'k'");
+        }else{
+            while(k>0){
+                for(int i=0; i<source.length-1; i++){
+                    source[i] = source[i+1];
+                }
+
+                source[source.length-1] = 0; 
+
+                k--;
+            }
+        }
+    }
+
+    public static void rotateLeft(int arr[], int k){
+        while(k>0){
+            int temp = arr[0];
+            for(int i=0; i<arr.length-1; i++){
+                arr[i] = arr[i+1];
+            }
+            
+            arr[arr.length-1] = temp;
+            k--;
+        }
+    }
+
+    public static void remove(int arr[], int size, int index){
+
+        if(index<0 || index>=size){
+            System.out.println("Invalid index deletion incomplete");
+        }else{
+            for(int i=index; i<size; i++){
+                arr[i] = arr[i+1];
+            }
+        }
+    }
+
+//method that will search for the value until there is 0 occurrence of value and removing it
+    public static void removeAll(int arr[], int size, int value){
+
+        if(finder(arr, value)){
+            System.out.println(value + " is not found in the array");
+        }else{
+            for(int i=0; i<size; i++){
+                int index = indexOf(arr, value);
+                if(index != -1){
+                    remove(arr, size, index);
+                }
+            }
+        }
+    }
+
+//finding the index of value. utility function for removeAll
+    public static int indexOf(int arr[], int value){
+        if(arr == null){
+            return -1;
+        }
+
+        for(int i=0; i<arr.length; i++){
+            if(arr[i] == value){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public static boolean SplitArray(int arr[]){
+
+        int leftsum = 0;
+        int rightsum = 0;
+
+        for(int i=0; i<arr.length; i++){
+            leftsum += arr[i];
+
+            for(int j=i+1; j<arr.length; j++){
+                rightsum += arr[j];
+            }
+
+            if(leftsum == rightsum){
+                return true;
+            }
+            rightsum = 0;
+        }
+
+        return false;
+    }
+
+    public static int[] ArraySeries(int n){
+
+        int arr[] = new int[n*n];
+
+        int jog = n;
+
+        for(int i=0; i<n; i++){
+            int val = 1;
+            jog--;
+
+            for(int j=i*n+n-1; j>=i*n+jog; j--){
+                arr[j] = val++;
+            }
+        }
+
+        return arr;
+    }
+
+    public static int MaxBunchCount(int arr[]){
+        int max = 0;
+        int count = 1;
+
+        for(int i=1; i<arr.length; i++){
+            
+            if(arr[i] == arr[i-1]){
+                count++;
+                if(max<count){
+                    max = count;
+                }
+            }else{
+                count = 1;
+            }
+        }
+
+        return max;
+    }
+
+    public static boolean Repetition(int arr[]){
+
+        for(int i=0; i<arr.length; i++){
+            int frq_curr = frequency(arr, arr[i]);
+
+            if(frq_curr != 1){
+                for(int j=i+1; j<arr.length; j++){
+                    if(arr[j] != arr[i]){
+                        int frq_oth = frequency(arr, arr[j]);
+
+                        if(frq_curr == frq_oth){
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return false;
+        
+    }
+
+// check the occurences of an element in the array. utility function for Repetition
+    public static int frequency(int arr[], int elem){
+
+        int count = 0;
+
+        for(int i=0; i<arr.length; i++){
+            if(arr[i] == elem){
+                count++;
+            }
+        }
+        
+        return count;
+    }
+
+    public static boolean Palindrom(int arr[], int start, int size){
+        int i=start;
+        int j=(start+size-1)%arr.length;
+        int mid=size/2;
+
+        for(int k=0; k<mid; k++){
+
+            if(arr[i++] != arr[j--]){
+                return false;
+            }
+
+            i = i%arr.length;
+            j = j<0 ? j=arr.length : j;
+
+        }
+        return true;
+    }
+
+    public static int[] Intersection(int arr1[], int arr2[], int arr1_size, int arr2_size, int arr1_start, int arr2_start){
+
+        int rtn_arr[] = new int[arr1_size>=arr2_size ? arr1_size : arr2_size];
+
+        int k = 0;
+
+        for(int i=0; i<arr1_size; i++){
+            int curr = arr1[(arr1_start+i)%arr1.length];
+
+            for(int j=0; j<arr2_size; j++){
+                if(curr == arr2[(arr2_start+j)%arr2.length]){
+                    if(finder(rtn_arr, curr)){
+                        rtn_arr[k++] = curr;
+                    }
+                }
+            }
+        }
+
+        return beautifier(rtn_arr);
+    }
+
+// for finding if an element exist in the resultant array or not. utitlity function for Intersection and removeAll
+    public static boolean finder(int arr[], int elem){
+        for(int i : arr){
+            if(i == elem){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+// for removing zeros from an array (e.g. compact). utility function for Intersection
+   public static int[] beautifier(int arr[]){
+        int cnt = 0;
+
+        for(int i=0; i<arr.length; i++){
+            if(arr[i]!=0){
+                cnt++;
+            }
+        }
+
+        int rtn_arr[] = new int[cnt];
+
+        for(int i=0; i<cnt; i++){
+            rtn_arr[i] = arr[i];
+        }
+
+        return rtn_arr;
+    }
+
+    public static void mcg_Game(char[] arr){
+        char done_arr[] = arr;
+
+        System.out.println("At the start:");
+        printArrayChar(done_arr);
+
+        while(true){
+            int r = (int)(Math.random()*(3-0+1)+0);
+
+            if(r == 1){
+                done_arr = mid_remove(done_arr);
+
+                if(done_arr.length == 1)
+                    break;
+
+                System.out.println("Players still in the game:");
+                printArrayChar(done_arr);
+            }else{
+                right_rotate_one_place(done_arr);
+            }
+            
+        }
+
+        System.out.println("The winner of the game is:");
+        printArrayChar(done_arr);
+
+    }
+//utility function of mcg_Game for rotating the array one time only
+    public static void right_rotate_one_place(char[] arr){
+        char temp = arr[arr.length - 1];
+
+        for(int i=arr.length-1; i>0; i--){
+            arr[i] = arr[i-1];
+        }
+
+        arr[0] = temp;
+    }
+//utility function of mcg_Game for removing the middle element from an array
+    public static char[] mid_remove(char[] arr){
+
+        char done_arr[] = new char[arr.length-1];
+
+        int done_arr_i = 0;
+
+        for(int i=0; i<arr.length; i++){
+            if(i == arr.length/2){
+                continue;
+            }else{
+                done_arr[done_arr_i++] = arr[i];
+            }
+        }
+        return done_arr;
+    }
+//utility function of mcg_Game for printing the char array
+    public static void printArrayChar(char[] arr){
+        for(char c: arr){
+            System.out.print(c + " ");
+        }
+        System.out.println();
+    }
+}
+

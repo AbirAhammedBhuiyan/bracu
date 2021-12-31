@@ -1,0 +1,286 @@
+#!/usr/bin/env python3
+
+####################################################
+########### Name: Abir Ahammed Bhuiyan #########
+########### ID: 20101197 ###################
+########### Section: 06 ################
+###################################
+
+class Node:
+    def __init__(self, datum, next=None):
+        self.datum = datum
+        self.next = next
+
+
+class LinkedList:
+    def __init__(self, a):
+        self.head = None
+        self.tail = None
+
+        for elem in a:
+            if not self.head:
+                self.head = Node(elem, self.head)
+                self.tail = self.head
+            else:
+                self.tail.next = Node(elem)
+                self.tail = self.tail.next
+
+    def showList(self):
+        if not self.head:
+            print("Empty List")
+        else:
+            itr = self.head
+            llstr = ""
+
+            while itr:
+                llstr += str(itr.datum) + " -> "
+                itr = itr.next
+
+            print(llstr[:-4])
+
+    def isEmpty(self):
+        if not self.head:
+            return True
+        return False
+    
+    def clear(self):
+        self.head = None
+        self.tail = None
+
+
+# utility function to calculate the total size of the given list
+    def size(self):
+        cnt = 0
+        itr = self.head
+        while itr:
+            cnt += 1
+            itr = itr.next
+        return cnt
+
+    def insert(self, newElement, index=None):
+        if self.find(newElement):
+            print(f"Key {newElement} already exists")
+        else:
+            if index == None:
+                if not self.head:
+                    self.head = Node(newElement, self.head)
+                    self.tail = self.head
+                else:
+                    self.tail.next = Node(newElement)
+                    self.tail = self.tail.next
+            else:
+                if index<0 or index>self.size():
+                    print("invalid index")
+                else:
+                    if index == 0:
+                        self.head = Node(newElement, self.head)
+                    else:
+                        itr = self.head
+                        for i in range(index-1):
+                            itr = itr.next
+                        itr.next = Node(newElement, itr.next)
+    
+    
+    def remove(self, deletekey):
+        itr = self.head
+
+        if(itr.datum == deletekey):
+            self.head = self.head.next
+            return deletekey
+        else:
+            while itr.next:
+                if itr.next.datum == deletekey:
+                    itr.next = itr.next.next
+                    return deletekey
+                itr = itr.next
+
+        print(f"Key {deletekey} does not exist")
+
+    def evenList(self):
+        newll = LinkedList([])
+        itr = self.head
+
+        while itr:
+            if not itr.datum%2:
+                newll.insert(itr.datum)
+            itr = itr.next
+
+        return newll
+
+    def find(self, elem):
+        itr = self.head
+
+        while itr:
+            if(itr.datum == elem):
+                return True
+            itr = itr.next
+        return False
+
+    def reverseList(self):
+        itr = self.head
+        prev = None
+        self.tail = self.head
+
+        while itr:
+            nxt = itr.next
+            itr.next = prev
+            prev = itr
+            itr = nxt
+        self.head = prev
+
+        
+
+    def sort(self):
+        itr1 = self.head
+
+        while itr1:
+            itr2 = itr1.next
+            while itr2:
+                if(itr2.datum < itr1.datum):
+                    temp = itr1.datum
+                    itr1.datum = itr2.datum
+                    itr2.datum = temp
+                itr2 = itr2.next
+            itr1 = itr1.next
+
+
+
+
+    def sum(self):
+        itr = self.head
+        cnt = 0
+
+        while itr:
+            cnt += itr.datum
+            itr = itr.next
+
+        return cnt
+
+
+    def rotateKTimes(self, k, side):
+        s = self.size()
+        k %= s
+        if side == 'left':
+            if(k == 0):
+                pass
+            else:
+                itr = self.head
+                self.tail.next = self.head
+                for i in range(k-1):
+                    itr = itr.next
+                self.head = itr.next
+                self.tail = itr
+                self.tail.next = None
+
+        else:
+            if(k == 0):
+                pass
+            else:
+                itr = self.head
+                self.tail.next = self.head
+                for i in range(s-k-1):
+                    itr = itr.next
+                self.head = itr.next
+                self.tail = itr
+                self.tail.next = None
+
+
+if __name__ == "__main__":
+
+#==========================Tester Code==========================#
+            
+#Task-2.1, 2.2 -- Constructor & showList
+    print("\n//=======Task 2.1, 2.2 -- Constructor & showList=======//")
+    a = [10, 20, 30, 40, 50, 60]
+    l1 = LinkedList(a)
+    l1.showList() #Should print: 10->20->30->40->50->60
+
+#Task-2.3 -- isEmpty
+    print("\n//========Task 2.3 -- isEmpty========//")
+    isListEmpty = l1.isEmpty()
+    print(isListEmpty) #Should print: false
+    b = []
+    l2 = LinkedList(b)
+    isListEmpty = l2.isEmpty()
+    print(isListEmpty) #Should print: true
+
+#Task-2.4 -- Clear
+    print("\n//=======Task 2.4 -- Clear =======//")
+    print("Before clearing Linked List")
+    l1.showList() #Should print: 10->20->30->40->50->60
+    l1.clear()
+    print("After clearing Linked List")
+    l1.showList() #Should print: Empty List
+
+#Task-2.5, 2.6 -- Insert
+    print("\n//=======Task 2.5, 2.6 -- Insert=======//")
+    c = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+    l3 = LinkedList(c)
+    l3.showList() #Should print: 10->20->30->40->50->60->70->80->90
+    l3.insert(100)
+    l3.showList() #Should print: 10->20->30->40->50->60->70->80->90->100
+    l3.insert(0, 0)
+    l3.showList() #Should print: 0->10->20->30->40->50->60->70->80->90->100
+    l3.insert(110, 5)
+    l3.showList() #Should print: 0->10->20->30->40->110->50->60->70->80->90->100
+    l3.insert(120, 12)
+    l3.showList() #Should print: 0->10->20->30->40->110->50->60->70->80->90->100->120
+    l3.insert(50) #Should print: Key 50 already exists
+
+#Task-2.7 -- Remove
+    print("\n//=======Task 2.7 -- Remove=======//")
+    l3.showList() #Should print: 0->10->20->30->40->110->50->60->70->80->90->100->120
+    l3.remove(0)
+    l3.showList() #Should print: 10->20->30->40->110->50->60->70->80->90->100->120
+    l3.remove(110) 
+    l3.showList() #Should print: 10->20->30->40->50->60->70->80->90->100->120
+    l3.remove(120)
+    l3.showList() #Should print: 10->20->30->40->50->60->70->80->90->100
+    l3.remove(120) #Should print: Key 120 does not exist
+
+#Task-2.8 -- EvenList
+    print("\n//=======Task 2.8 -- EvenList =======//")
+    d = [1, 2, 5, 3, 8]
+    l4 = LinkedList(d)
+    l5 = l4.evenList()
+    l5.showList() #Should print: 2->8
+
+#Task-2.9 -- Find
+    print("\n//=======Task 2.9 -- Find =======//")
+    found = l4.find(5)
+    print(found) #Should print: true
+    found = l4.find(4)
+    print(found) #Should print: false
+
+#Task-2.10 -- Reverse List
+    print("\n//=======Task 2.10 -- Reverse =======//")
+    print("Before Reverse: ", end='')
+    l4.showList() #Should print: 1->2->5->3->8
+    l4.reverseList()
+    print("After Reverse: ", end='')
+    l4.showList() #Should print: 8->3->5->2->1
+
+#Task-2.11 -- Sort
+    print("\n//=======Task 2.11 -- Sort =======//")
+    print("Before Sort: ", end='')
+    l4.showList() #Should print: 8->3->5->2->1
+    l4.sort()
+    print("After Sort: ", end='')
+    l4.showList() #Should print: 1->2->3->5->8
+
+#Task-2.12 -- Sum of Elements
+    print("\n//=======Task 2.12 -- Sum of Elements =======//")
+    l4.showList() #Should print: 1->2->3->5->8
+    total = l4.sum()
+    print("Sum of Elements:", total)
+
+#Task-2.13 -- Rotate
+    print("\n//=======Task 2.13 -- Rotate =======//")
+    l4.showList() #Should print: 1->2->3->5->8
+    l4.rotateKTimes(2, "left")
+    l4.showList() #Should print: 3->5->8->1->2
+    l4.rotateKTimes(2, "right")
+    l4.showList() #Should print: 1->2->3->5->8
+
+
+

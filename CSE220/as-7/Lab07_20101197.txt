@@ -1,0 +1,188 @@
+#!/usr/bin/env python3
+
+###########################################
+######## Name: Abir Ahammed Bhuiyan #######
+######## ID: 20101197               #######
+######## Section: 06                #######
+###########################################
+
+
+class KeyIndex:
+    def __init__(self, a):
+        min_and_max = self.findMinMax(a) 
+        if min_and_max[0] < 0:
+            self.cons = min_and_max[0]   
+            for i in range(len(a)):
+                a[i] = (-1*self.cons)+a[i]  
+        else:
+            self.cons = min_and_max[1]
+
+        length = self.findMax(a)        
+        self.k = [0]*(length+1)        
+
+        for i in range(len(a)):
+            self.k[a[i]] = self.k[a[i]] + 1 
+        
+
+
+    def search(self, value):
+        if self.cons < 0:
+            index = (-1*self.cons) + value
+        else:
+            index = value
+
+        if index >= 0 and len(self.k) > index and self.k[index] > 0:
+            return True
+        return False
+
+        
+    def sort(self):
+        length = 0
+        for i in range(len(self.k)):
+            length += self.k[i]
+        r = [0]*(length)
+
+        ptr_i = 0
+
+        if self.cons < 0:
+            for j in range(len(self.k)):
+                k = self.k[j]
+                if k>0:
+                    value = j + self.cons
+                    while k:
+                        r[ptr_i] = value
+                        ptr_i += 1
+                        k -= 1
+        else:
+            for j in range(len(self.k)):
+                k = self.k[j]
+                if k>0:
+                    value = j 
+                    while k:
+                        r[ptr_i] = value
+                        ptr_i += 1
+                        k -= 1
+        return r
+
+
+    def findMinMax(self, sil):
+        min_and_max = [0]*2
+        min_and_max[0] = min_and_max[1] = sil[0]
+        for i in range(1, len(sil)):
+            if sil[i] > min_and_max[1]:
+                min_and_max[1] = sil[i]
+            if sil[i] < min_and_max[0]:
+                min_and_max[0] = sil[i]
+        return min_and_max
+
+
+    def findMax(self, sil):
+        max = sil[0]
+
+        for i in range(1, len(sil)):
+            if sil[i] > max:
+                max = sil[i]
+
+        return max
+
+
+class HashTable:
+    def __init__(self):
+        self.result = [""]*10
+
+    def insert(self, st):
+        index = self.createHash(st)
+
+        if self.result[index] != "":
+            count = index+1
+            while self.result[count] != "":
+                count = (count+1)%len(self.result)
+                if count == index:
+                    print("Array full")
+                    break
+            if count != index:
+                self.result[count] = st
+        else:
+            self.result[index] = st
+
+    def createHash(self, st):
+        con = 0
+        sum = 0
+        for char in st:
+            if self.isConsonant(char):
+                con += 1
+            if self.isNumber(char):
+                sum += int(char)
+        
+        return ((con*24)+sum)%9
+
+    def printHashTable(self):
+        print("Printing the whole array: ")
+        for i in range(len(self.result)):
+            print(f"{i} ==> {self.result[i]}")
+
+    def isConsonant(self, char):
+        v = ord(char)
+        if v>=65 and v<=90:
+            if v!=65 and v!=69 and v!=73 and v!=79 and v!=85:
+                return True
+        return False
+
+
+    def isNumber(self, char):
+        if ord(char)>=48 and ord(char)<=57:
+            return True
+        return False
+
+
+
+if __name__ == "__main__":
+    print("############################################################")
+    print("############ Task 1 on Key index search & sorting ##########")
+    print("############################################################")
+    #ki = KeyIndex([1, 2, 3, 4, 8, 4])
+    ki = KeyIndex([5, -1, 3, 2, 8, -5, 8, 3])  #instantiation
+    print(ki.search(4))     # should print False
+    print(ki.search(-1))    # should print True
+    print(ki.sort())        # shoudl print [-5, -1, 2, 3, 3, 5, 8 , 8]                
+
+
+        
+    print("###########################################")
+    print("############ Task 2 on Hashing ############")
+    print("###########################################")
+
+    ht = HashTable()  #instantiation
+
+    print("index:", ht.createHash("ST1E89B8A32")) # should print 4
+
+    ht.insert("ST1E89B8A32")  # should be inserted in the 4th index
+
+    ht.printHashTable()
+    
+    print("index:", ht.createHash("ET1S89B8A32")) # should print 4
+    ht.insert("ET1S89B8A32")  # should be inserted in the 5th index
+
+    ht.printHashTable()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

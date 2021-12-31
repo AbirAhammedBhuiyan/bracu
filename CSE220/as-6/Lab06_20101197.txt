@@ -1,0 +1,264 @@
+#!/usr/bin/env python3
+
+####################################################
+########### Name: Abir Ahammed Bhuiyan  ############
+########### ID: 20101197                ############
+########### Section: 06                 ############
+####################################################
+
+'''
+R - recursive
+S - sort
+Sl - selection
+B - bubble
+I - insertion
+L - linked list
+D - doubly linked list
+'''
+
+class Node:
+    def __init__(self, datum, next=None, prev=None):
+        self.datum = datum
+        self.next = next
+        self.prev = prev
+
+
+class LinkedList:
+    def __init__(self, sil):
+        self.head = None
+        self.tail = None
+
+        for elem in sil:
+            if not self.head:
+                self.head = Node(elem, self.head)
+                self.tail = self.head
+            else:
+                self.tail.next = Node(elem)
+                self.tail = self.tail.next
+
+# utility function to show the singly linked list
+    def showList(self):
+        itr = self.head
+        llstr = ""
+
+        while itr:
+            llstr += str(itr.datum) + " -> "
+            itr = itr.next
+
+        print(llstr[:-4])
+
+
+class DoublyList:
+    def __init__(self, sil):
+        self.head = None
+        self.tail = None
+
+        for elem in sil:
+            if self.head == None:
+                self.head = Node(elem)
+                self.tail = self.head
+            else:
+                self.tail.next = Node(elem, None, self.tail)
+                self.tail = self.tail.next
+
+# utility function to show the doubly linked list
+    def showList(self):
+        itr = self.head
+
+        llstr = ""
+        while itr != None:
+            llstr += str(itr.datum) + " -> "
+            itr = itr.next
+
+        print(llstr[:-4])
+
+
+# utility function to check if the prev link is working
+    def revShowList(self):
+        itr = self.tail
+
+        llstr = ""
+
+        while itr != None:
+            llstr += str(itr.datum) + " <- "
+            itr = itr.prev
+
+        print(llstr[:-4])
+
+
+class SearchAndSort:
+    def RSlS(self, arr, i=0, j=0, flag=True):
+        if len(arr) == i:
+            return
+
+        if flag == True:
+            j = i+1
+
+        if(j < len(arr)):
+            if(arr[i] > arr[j]):
+                arr[i], arr[j] = arr[j], arr[i]
+            return self.RSlS(arr, i, j+1, False)
+        return self.RSlS(arr, i+1, 0, True)
+
+
+    def RIS(self, arr, i=1, j=0, temp=0, flag=False):
+        if flag==True:
+            if j>=0 and arr[j] > temp:
+                arr[j+1] = arr[j]
+                return self.RIS(arr, i, j-1, temp, True)
+            else:
+                arr[j+1] = temp
+                return self.RIS(arr, i+1, i, temp, False)
+        else:
+            if i>=len(arr):
+                return
+            temp = arr[i]
+            return self.RIS(arr, i, i-1, temp, True)
+
+
+    def LBS(self, head):
+        last = None
+
+        while last != head.next:
+            itr = head
+
+            while itr.next != last:
+                if itr.next.datum < itr.datum:
+                    itr.next.datum, itr.datum = itr.datum, itr.next.datum
+                itr = itr.next
+            last = itr
+
+
+    def LSlS(self, head):
+        itr1 = head
+
+        while itr1.next != None:
+            itr2 = itr1.next
+            while itr2 != None:
+                if itr2.datum < itr1.datum:
+                    itr2.datum, itr1.datum = itr1.datum, itr2.datum
+                itr2 = itr2.next
+
+            itr1 = itr1.next 
+
+    def DIS(self, head) :
+            itr = head
+            last = None
+
+            while itr != None:
+                last = itr.next
+
+                while last != None and last.prev != None and last.datum < last.prev.datum:
+                    last.prev.datum, last.datum = last.datum, last.prev.datum
+                    last = last.prev
+                
+                itr = itr.next
+
+    def binarySearch(self, arr, low, high, value):
+        if high >= low:
+
+            mid = (low+high)//2
+
+            if arr[mid] == value:
+                return True
+            elif value < arr[mid]:
+                return self.binarySearch(arr, low, mid-1, value)
+            else:
+                return self.binarySearch(arr, mid+1, high, value)
+        else:
+            return False
+
+
+
+class Fibonacci:
+    def __init__(self):
+        self.cached = [-1]*1000
+        self.cached[0], self.cached[1] = 0, 1
+
+    def fiboMemo(self, n):
+        if self.cached[n] != -1:
+            return self.cached[n]
+        self.cached[n] = self.fiboMemo(n-1) + self.fiboMemo(n-2)
+        return self.cached[n]
+
+
+if __name__ == "__main__":
+
+    sas = SearchAndSort()
+
+    print("###############################################")
+    print("####### 1. Selection Sort using Recursion #####")
+    print("###############################################")
+
+    arr = [2, 3, 5, 1]
+    print("Before selection sort:")
+    print(arr)
+    sas.RSlS(arr)
+    print("After selection sort:")
+    print(arr)
+
+
+    print("\n###############################################")
+    print("####### 2. Insertion Sort using Recursion #####")
+    print("###############################################")
+
+    arr = [5, 4, 3, 2, 1]
+    print("Before insertion sort:")
+    print(arr)
+    sas.RIS(arr)
+    print("After insertion sort:")
+    print(arr)
+
+
+    print("\n#####################################################")
+    print("####### 3. Bubble Sort using Singly Linked List #####")
+    print("#####################################################")
+
+    ll = LinkedList([5, 4, 3, 2, 1])
+    print("Before bubble sort:")
+    ll.showList()
+    sas.LBS(ll.head)
+    print("After bubble sort:")
+    ll.showList()
+
+    print("\n########################################################")
+    print("####### 4. Selection Sort using Singly Linked List #####")
+    print("########################################################")
+
+    ll = LinkedList([2, 4, 0, 1])
+    print("Before selection sort:")
+    ll.showList()
+    sas.LSlS(ll.head) 
+    print("After selection sort:")
+    ll.showList()
+
+
+    print("\n########################################################")
+    print("####### 5. Insertion Sort using Doubly Linked List #####")
+    print("########################################################")
+
+    dl = DoublyList([5, 4, 3, 2, 1])
+    print("Before insertion sort:")
+    dl.showList()
+    sas.DIS(dl.head)
+    print("After insertion sort:")
+    dl.showList()
+
+    print("\n##############################")
+    print("####### 6. Binary Search #####")
+    print("##############################")
+
+    arr = [7, 2, 10, 1, 9]  
+    sas.RIS(arr) # sorting the array for binary search 
+    print(sas.binarySearch(arr, 0, len(arr)-1, 9)) # should print True
+    print(sas.binarySearch(arr, 0, len(arr)-1, 3)) # should print False
+
+
+    print("\n########################################################")
+    print("####### 7. n-th Fibonacci number using memoization #####")
+    print("########################################################")
+
+    fibo = Fibonacci()
+    print(fibo.fiboMemo(46)) # should print '1836311903' with speed
+
+

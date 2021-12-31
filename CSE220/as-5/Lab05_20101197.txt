@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+
+##############################################
+########## Name: Abir Ahammed Bhuiyan ########
+########## Section: 06                ########
+########## ID: 20101197               ########
+##############################################
+
+class Node:
+    def __init__(self, datum, next=None):
+        self.datum = datum
+        self.next = next
+
+class LinkedList:
+    def __init__(self, sil):
+        self.head = None
+        self.tail = None
+
+        for elem in sil:
+            if not self.head:
+                self.head = Node(elem, self.head)
+                self.tail = self.head
+            else:
+                self.tail.next = Node(elem)
+                self.tail = self.tail.next
+
+# utility function for checking the linked list
+    def showList(self):
+        itr = self.head
+
+        llstr = ""
+
+        while itr != None:
+            llstr += str(itr.datum) + " -> "
+            itr = itr.next
+
+        print(llstr[:-4])
+
+class Recursion:
+    def factorial(self, num):
+        if not num:
+            return 1
+        return num * self.factorial(num-1)
+
+    def nFibo(self, num):
+        if num <= 1:
+            return num
+        return self.nFibo(num-1) + self.nFibo(num-2)
+
+    def printArray(self, sil, i=0):
+        if i == len(sil):
+            print()
+            return 
+        print(sil[i], end=" ")
+        return self.printArray(sil, i+1)
+
+    def powerN(self, num, power):
+        if not power:
+            return 1
+        return num * self.powerN(num, power-1)
+
+    def decimalToBinary(self, num):
+        if not num:
+            return ""
+        if num == num:
+            st = ""
+        rem = num%2
+        st += str(rem)
+        return st + self.decimalToBinary(num//2)
+
+    def addNum(self, itr):
+        if itr == None:
+            return 0
+        return itr.datum + self.addNum(itr.next)
+
+    def reversePrint(self, itr):
+        if itr != None:
+            self.reversePrint(itr.next)
+            print(itr.datum)
+
+    def hocBuilder(self, height):
+        if height == 0:
+            return 0
+        if height == 1:
+            return 8
+        return 5 + self.hocBuilder(height-1)
+
+    def halfPyramid(self, num):
+        if num == 0:
+            return ""
+        art = self.halfPyramid(num-1)
+        art += str(num) + " "
+        print(art)
+        
+        return art
+
+    def rightHalfPyramid_main(self, num, dig, spaces, cnt, flag):
+        if cnt<0:
+            return 
+        if flag:
+            print(dig, end=" ")
+            if(dig==num-cnt):
+                print()
+                return self.rightHalfPyramid_main(num, 1, spaces, cnt-1, False)
+            return self.rightHalfPyramid_main(num, dig+1, spaces, cnt, True)
+        else:
+            if(spaces == cnt):
+                return self.rightHalfPyramid_main(num, 1, 0, cnt, True)
+            else:
+                print(" ", end=" ")
+            return self.rightHalfPyramid_main(num, 1, spaces+1, cnt, False)
+
+    def rightHalfPyramid(self, num):
+        return self.rightHalfPyramid_main(num, 1, 0, num-1, False)
+
+
+class FinalQ:
+    def print(self, array, idx):
+        if(idx<len(array)):
+            profit = self.calcProfit(array[idx])
+            print(f"{idx+1}. Investment: {array[idx]}; Profit: {profit}")
+            return self.print(array, idx+1)
+
+
+    def calcProfit(self, investment):
+        if investment <= 25000:
+            return 0.0
+        elif investment >= 25000 and investment <=100000:
+            return 45 + self.calcProfit(investment - 1000)
+        else:
+            return 80 + self.calcProfit(investment - 1000)
+
+
+if __name__ == "__main__":
+
+    rs = Recursion()
+
+    #########################
+    #### 1. [Very Easy] #####
+    #########################
+
+    print("########## 1.a ###########")
+    
+    print(rs.factorial(5)) # should print: 120
+
+    print("######### 1.b ############")
+
+    print(rs.nFibo(6)) # should print: 8
+    
+    print("######### 1.c ############")
+
+    sil = [10, 20, 30, 40, 50]
+    rs.printArray(sil) # should print: 10 20 30 40 50
+
+    print("######### 1.d ############")
+
+    print(rs.powerN(3, 3)) # should print: 27
+
+    
+    ####################
+    #### 2. [Easy] #####
+    ####################
+
+    print("######### 2.a ############") 
+
+    print(rs.decimalToBinary(6)) # should print: 011
+
+    print("######### 2.b ############")
+
+    ll = LinkedList([1, 2, 3, 4, 5]) # instantiation of a Linked List from a List
+    print(rs.addNum(ll.head)) # should print: 15
+
+    print("######### 2.c ############")
+
+    ll = LinkedList([10, 20, 30, 40]) # instantiation of a Linked List from a List
+    rs.reversePrint(ll.head) # should print: 40 \n 30 \n 20 \n 10 \n
+
+
+    ######################
+    #### 3. [Medium] #####
+    ######################
+
+    print("######### 3 ############")
+
+    print(rs.hocBuilder(3)) # should print: 18
+
+
+    ####################
+    #### 4. [Hard] #####
+    ####################
+
+    print("######### 4.a ############") 
+
+    rs.halfPyramid(5)
+
+    print("######### 4.b ############")
+
+    rs.rightHalfPyramid(5)
+
+
+    #########################
+    #### 5. [Very Hard] #####
+    #########################
+
+    print("######### 5 ############")
+
+    array = [25000, 100000, 250000, 350000]
+    f = FinalQ()
+    f.print(array, 0)
+

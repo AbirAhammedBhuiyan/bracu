@@ -1,0 +1,284 @@
+#!/usr/bin/env python3
+
+##############################################
+########## Name: Abir Ahammed Bhuiyan ########
+########## Section: 06                ########
+########## ID: 20101197               ########
+##############################################
+
+####################################
+####### Exception Classes ########
+###############################
+
+class StackOverflow(Exception):
+    pass
+
+class StackUnderflow(Exception):
+    pass
+
+################################################
+####### Stack implemented with array ########
+##########################################
+
+class ArrayStack:
+    def __init__(self, size):
+        self.stack = [0]*size
+        self.top = -1
+
+    def push(self, datum):
+        if(self.top == len(self.stack)-1):
+            raise StackOverflow
+        else:
+            self.stack[self.top+1] = datum
+            self.top += 1
+
+    def peek(self):
+        if(self.top == -1):
+            raise StackUnderflow
+        else:
+            return self.stack[self.top]
+
+    def pop(self):
+        if(self.top == -1):
+            raise StackUnderflow
+        else:
+            value = self.stack[self.top]
+            self.stack = self.stack[:-1]
+            self.top -= 1
+            return value
+
+    def isEmpty(self):
+        if(self.top == -1):
+            return True
+        return False
+
+
+#####################################################
+####### Stack implemented with Linked List ########
+#################################################
+
+class Node:
+    def __init__(self, datum, next=None):
+        self.datum = datum
+        self.next = next
+
+
+class LinkedListStack:
+    def __init__(self):
+        self.head = None
+
+    def push(self, value):
+        if(self.head == None):
+            self.head = Node(value)
+        else:
+            self.head = Node(value, self.head)
+
+    def peek(self):
+        if(self.head == None):
+            raise StackUnderflow
+        else:
+            return self.head.datum
+
+    def pop(self):
+        if(self.head == None):
+            raise StackUnderflow
+        else:
+            temp = self.head.datum
+            self.head = self.head.next
+            return temp
+
+    def isEmpty(self):
+        if(self.head == None):
+            return True
+        return False
+
+
+# utility function for finding the character's index.
+# dependency for 'isValidArray()' and 'isValidLinkedList()'
+
+def findChar(line, c):
+    index = 0
+    for char in line:
+        if char == c:
+            return index 
+        index += 1
+    return False
+
+####################################################
+####### Checking validity with ArrayStack ########
+###############################################
+
+
+def isValidArray(line):
+    arrst = ArrayStack(10)
+    ans = True
+    index = 0
+
+    try:
+        for char in line:
+            if char=='(' or char=='{' or char=='[':
+                arrst.push(char)
+            elif arrst.isEmpty() == False:
+                if char == ')':
+                    if(arrst.peek() == '('):
+                        arrst.pop()
+                    else:
+                        ans = False
+                        break
+                elif char == '}':
+                    if(arrst.peek() == '{'):
+                        arrst.pop()
+                    else:
+                        ans = False
+                        break
+                elif char == ']':
+                    if(arrst.peek() == '['):
+                        arrst.pop()
+                    else:
+                        ans = False
+                        break
+            elif arrst.isEmpty() == True:
+                if char==')' or char=='}' or char==']':
+                    ans = False
+                    break
+            else:
+                pass
+            index += 1
+
+        print(line)
+        if arrst.isEmpty() == True and ans == True:
+            print("This expression is correct")
+        elif arrst.isEmpty() == True and ans == False:
+            index = findChar(line, line[index])
+            print("This expression is NOT correct")
+            print(f"Error at character # {index+1}. '{char}'- not opened.")
+        else:
+            index = findChar(line, arrst.peek())
+            char = arrst.peek()
+            if char=='(' or char=='{' or char=='[':
+                print("This expression is NOT correct")
+                print(f"Error at character # {index+1}. '{char}'- not closed.")
+            else:
+                print("This expression is NOT correct")
+                print(f"Error at character # {index+1}. '{char}'- not opened.")
+
+    except StackOverflow:
+        print("Stack overflow occured")
+    except StackUnderflow:
+        print("Stack undeflow occured")
+
+
+#########################################################
+####### Checking validity with LinkedListStack ########
+#####################################################
+
+def isValidLinkedList(line):
+    llst = LinkedListStack()
+    ans = True
+    index = 0
+
+    try:
+        for char in line:
+            if char=='(' or char=='{' or char=='[':
+                llst.push(char)
+            elif llst.isEmpty() == False:
+                if char == ')':
+                    if(llst.peek() == '('):
+                        llst.pop()
+                    else:
+                        ans = False
+                        break
+                elif char == '}':
+                    if(llst.peek() == '{'):
+                        llst.pop()
+                    else:
+                        ans = False
+                        break
+                elif char == ']':
+                    if(llst.peek() == '['):
+                        llst.pop()
+                    else:
+                        ans = False
+                        break
+            elif llst.isEmpty() == True:
+                if char==')' or char=='}' or char==']':
+                    ans = False
+                    break
+            else:
+                pass
+            index += 1
+
+        print(line)
+        if llst.isEmpty() == True and ans == True:
+            print("This expression is correct")
+        elif llst.isEmpty() == True and ans == False:
+            index = findChar(line, line[index])
+            print("This expression is NOT correct")
+            print(f"Error at character # {index+1}. '{char}'- not opened.")
+        else:
+            index = findChar(line, llst.peek())
+            char = llst.peek()
+            if char=='(' or char=='{' or char=='[':
+                print("This expression is NOT correct")
+                print(f"Error at character # {index+1}. '{char}'- not closed.")
+            else:
+                print("This expression is NOT correct")
+                print(f"Error at character # {index+1}. '{char}'- not opened.")
+
+    except StackOverflow:
+        print("Stack overflow occured")
+    except StackUnderflow:
+        print("Stack undeflow occured")
+
+##########################################
+########## Driver codes ################
+#########################################
+
+if __name__ == "__main__":
+
+    print("###################################################")
+    print("########## Task 1: using array based stack ######")
+    print("###################################################")
+
+    isValidArray("1+2*(3/4)") 
+
+    # should print: This expression is correct
+
+    isValidArray("1+2*[3*3+{4–5(6(7/8/9)+10)–11+(12*8)]+14}]") 
+
+    #should print: This expression is Not correct
+    #              Error at character # 10. '{'- not closed.
+
+    isValidArray("1+2*[3*3+{4–5(6(7/8/9)+10)}–11+(12*8)/{13+13}]+14")
+
+    # should print: This expression is correct
+
+    isValidArray("1+2]*[3*3+{4–5(6(7/8/9)+10)–11+(12*8)]+14}]")
+
+    #should print: This expression is NOT correct
+    #              Error at character # 4. ']'- not opened.
+
+
+    print("##########################################################")
+    print("########## Task 2: using linked list based stack ######")
+    print("##########################################################")
+
+    isValidLinkedList("1+2*(3/4)") 
+
+    # should print: This expression is correct
+
+    isValidLinkedList("1+2*[3*3+{4–5(6(7/8/9)+10)–11+(12*8)]+14}]") 
+
+    #should print: This expression is Not correct
+    #              Error at character # 10. '{'- not closed.
+
+    isValidLinkedList("1+2*[3*3+{4–5(6(7/8/9)+10)}–11+(12*8)/{13+13}]+14")
+
+    # should print: This expression is correct
+
+    isValidLinkedList("1+2]*[3*3+{4–5(6(7/8/9)+10)–11+(12*8)]+14}]")
+
+    #should print: This expression is NOT correct
+    #              Error at character # 4. ']'- not opened.
+
+

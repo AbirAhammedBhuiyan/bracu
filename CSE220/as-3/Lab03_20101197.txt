@@ -1,0 +1,201 @@
+#!/usr/bin/env python3
+
+####################################################
+########### Name: Abir Ahammed Bhuiyan #########
+########### ID: 20101197 ###################
+########### Section: 06 ################
+###################################
+
+class Node:
+    def __init__(self, datum, next=None, prev=None):
+        self.datum = datum
+        self.next = None
+        self.prev = None
+
+
+class DoublyList:
+    def __init__(self, data_list):
+        self.head = Node(None)
+
+        self.head.next = self.head.prev = self.head
+
+        for elem in data_list:
+            n = Node(elem)
+            itr = self.head.prev
+            n.next = itr.next
+            n.prev = itr
+            itr.next.prev = n
+            itr.next = n
+
+    def showList(self):
+        itr = self.head.next
+
+        if(itr == self.head):
+            print("Empty List")
+        else:
+            llstr = ""
+            while (itr != self.head):
+                llstr += " <- " + str(itr.datum) + " -> "
+                itr = itr.next
+            print(llstr)
+
+
+# Tester function to check if 'prev' link is working or not
+
+    def revShowList(self):
+        itr = self.head.prev
+
+        if(itr == self.head):
+            print("Empty List")
+        else:
+            llstr = ""
+            while itr!=self.head:
+                llstr += " <- " + str(itr.datum) + " -> "
+                itr = itr.prev
+            print(llstr)
+
+
+    def insert(self, newElement, index=None):
+        if(index == None):
+            itr = self.head.next
+
+            while (itr != self.head):
+                if(itr.datum == newElement):
+                    print(f"key {newElement} exists in the list")
+                    return
+                itr = itr.next
+            
+            n = Node(newElement)
+            itr = self.head.prev
+            n.next = itr.next
+            n.prev = itr
+            itr.next.prev = n
+            itr.next = n
+        else:
+            if index<0 or index>self.size():
+                print("Invalid Index")
+                return
+            else:
+                itr = self.head.next
+                while (itr != self.head):
+                    if(itr.datum == newElement):
+                        print(f"key {newElement} exists in the list")
+                        return
+                    itr = itr.next
+
+                itr = self.head
+                for i in range(index):
+                    itr = itr.next
+
+                n = Node(newElement)
+                n.next = itr.next
+                n.prev = itr
+                itr.next.prev = n
+                itr.next = n
+
+
+    def remove(self, index):
+        if index<0 or index>=self.size():
+            print("Invalid Index")
+            return
+        else:
+            itr = self.head.next
+            for i in range(index):
+                itr = itr.next
+
+            itr.next.prev = itr.prev
+            itr.prev.next = itr.next
+            itr.next = None
+            itr.prev = None
+
+    def removeKey(self, deleteKey):
+        itr = self.head.next
+
+        while (itr != self.head):
+            if(itr.datum == deleteKey):
+                itr.next.prev = itr.prev
+                itr.prev.next = itr.next
+                itr.next = None
+                itr.prev = None
+                return deleteKey
+            itr = itr.next
+
+        return f"key {deleteKey} not found in the list"
+
+
+# utiltiy function for calculating the size of the list
+
+    def size(self):
+        cnt = 0
+
+        itr = self.head.next
+        while (itr!=self.head):
+            cnt += 1
+            itr = itr.next
+
+        return cnt
+    
+
+
+if __name__ == "__main__":
+
+#=======================Tester Code=========================
+
+# Task 2.1, 2,2 -- Constructor & showList
+
+    print("\n===== Task 2.1, 22 -- Constructor & showList =======")
+    a = [10, 20, 30, 40, 50, 60] 
+    l1 = DoublyList(a)
+    l1.showList()    #should print: <- 10 ->  <- 20 ->  <- 30 ->  <- 40 ->  <- 50 ->  <- 60 -> 
+    
+    b = []
+    l2 = DoublyList(b)
+    l2.showList()    #should print: Empty List
+
+    
+# Task 2.3, 2,4 -- insert
+    print("\n===== Task 2.3, 2,4 -- insert ========")
+    c = [1, 2, 3, 4, 5]
+    l3 = DoublyList(c)
+    l3.showList()   #should print:  <- 1 ->  <- 2 ->  <- 3 ->  <- 4 ->  <- 5 -> 
+    l3.insert(6)
+    l3.showList()   #should print: <- 1 ->  <- 2 ->  <- 3 ->  <- 4 ->  <- 5 ->  <- 6 -> 
+    l3.insert(2)    #should print: key 2 exists in the list
+    l3.showList()   #should print:  <- 1 ->  <- 2 ->  <- 3 ->  <- 4 ->  <- 5 ->  <- 6 -> 
+    l3.insert(7, 2) 
+    l3.showList()   #should print: <- 1 ->  <- 2 ->  <- 7 ->  <- 3 ->  <- 4 ->  <- 5 ->  <- 6 ->
+    l3.insert(8, 0)
+    l3.showList()   #should print: <- 8 ->  <- 1 ->  <- 2 ->  <- 7 ->  <- 3 ->  <- 4 ->  <- 5 ->  <- 6 -> 
+    l3.insert(4, 4) #should print: key 4 exists in the list
+    l3.insert(9, 9) #should print: Invalid Index
+    
+
+# Task 2.5 -- remove
+    print("\n===== Task 2.5 -- remove ========")
+    l3.showList()   #should print: <- 8 ->  <- 1 ->  <- 2 ->  <- 7 ->  <- 3 ->  <- 4 ->  <- 5 ->  <- 6 -> 
+    l3.remove(0) 
+    l3.showList()   #should print: <- 1 ->  <- 2 ->  <- 7 ->  <- 3 ->  <- 4 ->  <- 5 ->  <- 6 -> 
+    l3.remove(7)    #should print: Invalid Index
+    l3.remove(6)
+    l3.showList()   #should print: <- 1 ->  <- 2 ->  <- 7 ->  <- 3 ->  <- 4 ->  <- 5 -> 
+
+
+# Task 2.6 -- removeKey
+    print("\n===== Task 2.6 -- removeKey ========")
+    l3.showList()           #should print: <- 1 ->  <- 2 ->  <- 7 ->  <- 3 ->  <- 4 ->  <- 5 ->
+    print(l3.removeKey(7))  #should print: 7
+    l3.showList()           #should print: <- 1 ->  <- 2 ->  <- 3 ->  <- 4 ->  <- 5 ->
+    print(l3.removeKey(8))  #should print: key 8 not found in the list
+    print(l3.removeKey(1))  #should print: 1
+    l3.showList()           #should print: <- 2 ->  <- 3 ->  <- 4 ->  <- 5 ->
+    
+
+    
+
+
+
+                
+
+
+
+
