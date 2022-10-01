@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container {
+    width: 50%;
+    height: 66%;
+    overflow: auto;
+    border-radius: 12px;
+}
+
+iframe {
+    width: 80%;
+    height: 600px;
+    margin-top: 20px;
+}
+.code-wrapper {
+    position: relative;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
+
+    iframe {
+        width: 90%;
+        height: 300px;
+    }
+    
+}
