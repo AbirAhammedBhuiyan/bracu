@@ -1,29 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/style.css">
-    <link rel="stylesheet" href="../assets/themes/stackoverflow-dark.min.css">
     <title>CSE221/as-1</title>
-</head>
-<body>
-
-    <iframe src="https://docs.google.com/viewer?url=https://abrar2akib.github.io/barood_du/econ/econ_faq.pdf&embedded=true" ></iframe>
-    <div class="container">
-        <div class="code-wrapper">
-            <pre>
-                <code id="code" class="language-python">
-if (5<6):
-    print("wow")
-if (7>5):
-    print("hello")
-                </code>
-            </pre>
-        </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="../assets/themes/stackoverflow-dark.min.css">
+    <link rel="stylesheet" href="../assets/style.css">
+  </head>
+  <body>
+    <div class="title">
+        <h2>Lab Assignment-01</h2>
     </div>
-</body>
-<script src="../assets/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
+
+    <iframe src="https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE221/as-1/as-1.pdf&embedded=true" ></iframe>
+
+    <div class="button-container">
+        <button type="button" class="btn btn-primary" onclick="loadFile('problem1')">problem-1</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('problem2')">problem-2</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('problem3')">problem-3</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('problem4')">problem-4</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('problem5')">problem-5</button>
+    </div>
+
+    <div id="sub-title"></div>    
+
+
+    <div id="code-wrapper"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script src="../assets/highlight.min.js"></script>
+    <script>
+        function loadFile(button_name) {
+
+            document.getElementById('sub-title').innerHTML = "";
+            document.getElementById('sub-title').innerHTML = `${button_name}`;
+
+            if (button_name === "problem2") {
+
+                document.getElementById('code-wrapper').innerHTML = "";
+                document.getElementById('code-wrapper').innerHTML = "<iframe src='https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE221/as-1/lab-01/explanations.pdf&embedded=true'></iframe>";
+
+            } else if (button_name === "problem5") {
+
+                document.getElementById('code-wrapper').innerHTML = "";
+                document.getElementById('code-wrapper').innerHTML = "<iframe src='https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE221/as-1/lab-01/explanations.pdf&embedded=true'></iframe>";
+
+            } else {
+
+                fetch(`./lab-01/${button_name}.py`)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(data) {
+                    document.getElementById('code-wrapper').innerHTML = "";
+                    document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-python'>${data}</code></pre>`;
+                    hljs.highlightAll();
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
+            }
+        }
+
+    </script>
+  </body>
 </html>
