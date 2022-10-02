@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE221/as-3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="../assets/themes/stackoverflow-dark.min.css">
+    <link rel="stylesheet" href="../assets/style.css">
+  </head>
+  <body>
+    <div class="title">
+        <h2>Lab Assignment-03</h2>
+    </div>
+
+    <iframe src="https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE221/as-3/as-3.pdf&embedded=true" ></iframe>
+
+    <div class="button-container">
+        <button type="button" class="btn btn-primary" onclick="loadFile('task1')">task-1</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('task2')">task-2</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('task3')">task-3</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('task4')">task-4</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('task5')">task-5</button>
+    </div>
+
+    <div id="sub-title"></div>    
+
+
+    <div id="code-wrapper"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script src="../assets/highlight.min.js"></script>
+    <script>
+        function loadFile(button_name) {
+
+            document.getElementById('sub-title').innerHTML = "";
+            document.getElementById('sub-title').innerHTML = `${button_name}`;
+
+            if (button_name === "task5") {
+                document.getElementById('code-wrapper').innerHTML = "";
+                document.getElementById('code-wrapper').innerHTML = "<iframe src='https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE221/as-3/lab-03/task5.pdf&embedded=true'></iframe>";
+
+            } else {
+                fetch(`./lab-03/${button_name}.py`)
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(data) {
+                    document.getElementById('code-wrapper').innerHTML = "";
+                    document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-python'>${data}</code></pre>`;
+                    hljs.highlightAll();
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }
+        }
+
+    </script>
+  </body>
+</html>

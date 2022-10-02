@@ -1,0 +1,2 @@
+Minimum traffic level: 15
+Shortest Path: Motijheel -> A -> B -> G -> F -> MOGHBAZAR
