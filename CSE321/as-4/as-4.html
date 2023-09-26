@@ -4,27 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE221/as-2</title>
+    <title>CSE321/as-4</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/themes/stackoverflow-dark.min.css">
     <link rel="stylesheet" href="../../assets/style.css">
   </head>
   <body>
     <div class="title">
-        <h2>Lab Assignment-02</h2>
+        <h2>Lab Assignment-04</h2>
     </div>
 
-    <iframe src="https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE221/as-2/as-2.pdf&embedded=true" ></iframe>
+    <iframe src="https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE321/as-4/as-4.pdf&embedded=true" ></iframe>
 
     <div class="button-container">
-        <button type="button" class="btn btn-primary" onclick="loadFile('task1')">task-1</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('task2')">task-2</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('task3')">task-3</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('task4')">task-4</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('task5')">task-5</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('task_1')">task-1</button>
+        <button type="button" class="btn btn-primary" onclick="loadFile('task_2')">task-2</button>
     </div>
 
     <div id="sub-title"></div>    
+
 
     <div id="code-wrapper"></div>
 
@@ -36,19 +34,28 @@
             document.getElementById('sub-title').innerHTML = "";
             document.getElementById('sub-title').innerHTML = `${button_name}`;
 
-            fetch(`./lab-02/${button_name}.py`)
+            fetch(`./code04/${button_name}.c`)
             .then(function(response) {
                 return response.text();
             })
             .then(function(data) {
                 document.getElementById('code-wrapper').innerHTML = "";
-                document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-python'>${data}</code></pre>`;
+                document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-cpp'>${htmlencode(data)}</code></pre>`;
                 hljs.highlightAll();
             })
             .catch(function(error) {
                 console.log(error);
             });
 
+        }
+
+        function htmlencode(text) {
+            return (
+                text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+            );
         }
 
     </script>

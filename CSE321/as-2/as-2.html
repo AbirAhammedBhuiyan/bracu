@@ -17,12 +17,13 @@
     <iframe src="https://docs.google.com/viewer?url=https://eniac00.github.io/bracu/CSE321/as-2/as-2.pdf&embedded=true" ></iframe>
 
     <div class="button-container">
-        <button type="button" class="btn btn-primary" onclick="loadFile('1_shell_commands')">task-1</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('2_a')">task-2(a)</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('2_b')">task-2(b)</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('2_c')">task-2(c)</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('2_d')">task-2(d)</button>
-        <button type="button" class="btn btn-primary" onclick="loadFile('2_e')">task-2(e)</button>
+        <button type="button" class="btn btn-primary" onclick="subButton('structs')">Structs</button>
+        <button type="button" class="btn btn-primary" onclick="subButton('syscalls')">Syscalls</button>
+        <button type="button" class="btn btn-primary" onclick="subButton('threads')">Threads</button>
+    </div>
+
+    <div id="sub-button" class="button-container">
+
     </div>
 
     <div id="sub-title"></div>    
@@ -33,42 +34,67 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="../../assets/highlight.min.js"></script>
     <script>
+        function subButton(sub_button) { 
+
+            const sbutton_div = document.getElementById("sub-button");
+            sbutton_div.innerHTML = "";
+
+            if (sub_button == 'structs') {
+                for(let i=1; i<3; i++) {
+                    const button = document.createElement("button");
+                    button.setAttribute("type", "button");
+                    button.setAttribute("class", "btn btn-secondary");
+                    button.innerText = `task_${i}`;
+                    button.setAttribute("onclick", `loadFile('structs/task_${i}')`);
+                    sbutton_div.appendChild(button);
+                }
+            }
+
+            if (sub_button == 'syscalls') {
+                for(let i=1; i<6; i++) {
+                    const button = document.createElement("button");
+                    button.setAttribute("type", "button");
+                    button.setAttribute("class", "btn btn-secondary");
+                    button.innerText = `task_${i}`;
+                    button.setAttribute("onclick", `loadFile('syscalls/task_${i}')`);
+                    sbutton_div.appendChild(button);
+                }
+                sbutton_div.innerHTML += `<button type="button" class="btn btn-secondary" onclick="loadFile('syscalls/oddeven')">oddeven</button>`;
+                sbutton_div.innerHTML += `<button type="button" class="btn btn-secondary" onclick="loadFile('syscalls/sort')">sort</button>`;
+
+            }
+
+            if (sub_button == 'threads') {
+                for(let i=1; i<4; i++) {
+                    const button = document.createElement("button");
+                    button.setAttribute("type", "button");
+                    button.setAttribute("class", "btn btn-secondary");
+                    button.innerText = `task_${i}`;
+                    button.setAttribute("onclick", `loadFile('threads/task_${i}')`);
+                    sbutton_div.appendChild(button);
+                }
+                sbutton_div.innerHTML += `<button type="button" class="btn btn-secondary" onclick="loadFile('threads/optimized_task_3')">Optimized_task_3</button>`;
+            }
+
+        }
         function loadFile(button_name) {
 
             document.getElementById('sub-title').innerHTML = "";
             document.getElementById('sub-title').innerHTML = `${button_name}`;
 
-            if (button_name === "1_shell_commands") {
-                fetch(`./code01/${button_name}.txt`)
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(data) {
-                    document.getElementById('code-wrapper').innerHTML = "";
-                    document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-txt'>${data}</code></pre>`;
-                    hljs.highlightAll();
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            fetch(`./code02/${button_name}.c`)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(data) {
+                document.getElementById('code-wrapper').innerHTML = "";
+                document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-cpp'>${htmlencode(data)}</code></pre>`;
+                hljs.highlightAll();
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
 
-
-            } else {
-
-                fetch(`./code01/${button_name}.c`)
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(data) {
-                    document.getElementById('code-wrapper').innerHTML = "";
-                    document.getElementById('code-wrapper').innerHTML = `<pre><code class='language-cpp'>${htmlencode(data)}</code></pre>`;
-                    hljs.highlightAll();
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-
-            }
         }
 
         function htmlencode(text) {
