@@ -12,6 +12,7 @@
 #     sorted_keys = sorted(list(graph.keys()), key = lambda x: int(x))
 #     return {k : graph[k] for k in sorted_keys}
 
+from pprint import pprint
 
 def createGraph(fileName):
 
@@ -56,6 +57,7 @@ def printGraph(fileName, graph):
 if __name__ == "__main__":
 
     graph = createGraph('input1.txt')
+    pprint(graph)
 
     printGraph('output1.txt', graph)
 
